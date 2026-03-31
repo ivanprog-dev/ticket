@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT-Support Ticket erstellen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            opacity: 0;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            opacity: 1;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="bg-[#0f172a] text-slate-200 min-h-screen p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-white">IT-Support</h1>
+            <p class="text-slate-400">Portal für Ticket-Erstellung</p>
+        </div>
+        <a href="/support" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition border border-slate-600 shadow-lg">
+            Mitarbeiter Login
+        </a>
+    </div>
+
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl p-6 md:p-10 mb-12">
+            <h2 class="text-xl font-bold mb-6 text-white border-b border-slate-700 pb-4">Ticket erstellen</h2>
+
+            <form action="/add" method="POST" enctype="multipart/form-data" class="space-y-6">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2 uppercase text-slate-500">Vorname</label>
+                        <input type="text" name="vorname" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 uppercase text-slate-500">Nachname</label>
+                        <input type="text" name="nachname" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2 uppercase text-slate-500">E-Mail Adresse</label>
+                        <input type="email" name="email" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 uppercase text-slate-500">Firma</label>
+                        <input type="text" name="firma" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2 uppercase text-slate-500">Telefonnummer</label>
+                        <input type="text" name="telefon" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 uppercase text-slate-500">Straße & Hausnummer</label>
+                        <input type="text" name="strasse" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2 uppercase text-slate-500">Postleitzahl</label>
+                        <input type="text" name="plz" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 uppercase text-slate-500">Ort</label>
+                        <input type="text" name="ort" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2 uppercase text-slate-500">Titel des Problems</label>
+                    <input type="text" name="titel" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2 uppercase text-slate-500">Kategorie</label>
+                        <select name="kategorie" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition cursor-pointer">
+                            <option value="Software">Software</option>
+                            <option value="Hardware">Hardware</option>
+                            <option value="Zugang/Account">Zugang/Account</option>
+                            <option value="Sonstiges">Sonstiges</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 uppercase text-slate-500">Priorität</label>
+                        <select name="prioritaet" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition cursor-pointer">
+                            <option value="Niedrig">Niedrig</option>
+                            <option value="Mittel" selected>Mittel</option>
+                            <option value="Hoch">Hoch</option>
+                            <option value="Kritisch">Kritisch</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2 uppercase text-slate-500">Beschreibung</label>
+                    <textarea name="beschreibung" rows="4" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2 uppercase text-slate-500">Anhang (Optional)</label>
+                    <input type="file" name="datei" class="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500 transition cursor-pointer">
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition shadow-lg shadow-blue-900/20">
+                    Ticket absenden
+                </button>
+            </form>
+        </div>
+
+        <div class="max-w-3xl mx-auto mb-20">
+            <h2 class="text-2xl font-bold mb-6 text-center text-white">Häufig gestellte Fragen (FAQ)</h2>
+            <div class="space-y-3">
+                
+                <div class="faq-item bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
+                    <div class="p-4 flex justify-between items-center"><span class="font-medium">Wie lange dauert die Bearbeitung meines Tickets?</span><svg class="faq-icon h-5 w-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></div>
+                    <div class="faq-answer px-4 pb-4 text-slate-400 text-sm">In der Regel erhalten Sie innerhalb von 2 bis 4 Stunden eine erste Rückmeldung. Komplexe Anfragen werden spätestens innerhalb von 24 Stunden bearbeitet.</div>
+                </div>
+
+                <div class="faq-item bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
+                    <div class="p-4 flex justify-between items-center"><span class="font-medium">Wie setze ich mein Passwort zurück?</span><svg class="faq-icon h-5 w-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></div>
+                    <div class="faq-answer px-4 pb-4 text-slate-400 text-sm">Nutzen Sie die „Passwort vergessen“-Funktion auf der Login-Seite. Falls Sie keinen Zugriff auf Ihre E-Mail haben, erstellen Sie ein Ticket der Kategorie „Zugang/Account“.</div>
+                </div>
+
+                <div class="faq-item bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
+                    <div class="p-4 flex justify-between items-center"><span class="font-medium">Kann ich Screenshots an mein Ticket hängen?</span><svg class="faq-icon h-5 w-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></div>
+                    <div class="faq-answer px-4 pb-4 text-slate-400 text-sm">Ja, nutzen Sie dafür das Feld „Anhang“ im Formular. Dies hilft unseren Technikern, den Fehler schneller zu identifizieren und zu beheben.</div>
+                </div>
+
+                <div class="faq-item bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
+                    <div class="p-4 flex justify-between items-center"><span class="font-medium">Was tun, wenn mein Drucker nicht reagiert?</span><svg class="faq-icon h-5 w-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></div>
+                    <div class="faq-answer px-4 pb-4 text-slate-400 text-sm">Prüfen Sie zuerst die Kabelverbindung und möglichen Papierstau. Starten Sie das Gerät neu. Hilft dies nicht, geben Sie im Ticket bitte die Gerätenummer an.</div>
+                </div>
+
+                <div class="faq-item bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
+                    <div class="p-4 flex justify-between items-center"><span class="font-medium">Wie erfahre ich den aktuellen Status meiner Anfrage?</span><svg class="faq-icon h-5 w-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></div>
+                    <div class="faq-answer px-4 pb-4 text-slate-400 text-sm">Sie erhalten bei jeder Statusänderung (z. B. von „Offen“ auf „In Bearbeitung“) automatisch eine Benachrichtigung an Ihre im Ticket angegebene E-Mail-Adresse.</div>
+                </div>
+
+                <div class="faq-item bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
+                    <div class="p-4 flex justify-between items-center"><span class="font-medium">Werden private Laptops oder Handys unterstützt?</span><svg class="faq-icon h-5 w-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></div>
+                    <div class="faq-answer px-4 pb-4 text-slate-400 text-sm">Nein, unser IT-Support beschränkt sich ausschließlich auf Firmeneigentum und von der IT-Abteilung offiziell freigegebene Softwarelösungen.</div>
+                </div>
+
+                <div class="faq-item bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
+                    <div class="p-4 flex justify-between items-center"><span class="font-medium">Was bedeutet die Priorität „Kritisch“?</span><svg class="faq-icon h-5 w-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></div>
+                    <div class="faq-answer px-4 pb-4 text-slate-400 text-sm">Diese Stufe ist für totale Arbeitsausfälle (z. B. Server-Down oder gesamtes Büro ohne Internet) reserviert und wird mit höchster Vorrangigkeit behandelt.</div>
+                </div>
+
+                <div class="faq-item bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
+                    <div class="p-4 flex justify-between items-center"><span class="font-medium">Wie erreiche ich den Support telefonisch?</span><svg class="faq-icon h-5 w-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></div>
+                    <div class="faq-answer px-4 pb-4 text-slate-400 text-sm">In dringenden Notfällen erreichen Sie unsere Hotline unter der internen Durchwahl -555 (Montag bis Freitag, 08:00 - 17:00 Uhr).</div>
+                </div>
+
+                <div class="faq-item bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
+                    <div class="p-4 flex justify-between items-center"><span class="font-medium">Wo finde ich meine Ticket-ID?</span><svg class="faq-icon h-5 w-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></div>
+                    <div class="faq-answer px-4 pb-4 text-slate-400 text-sm">Nach dem Absenden wird Ihnen die ID direkt angezeigt. Zudem finden Sie diese im Betreff der Bestätigungs-E-Mail (z. B. Ticket #20).</div>
+                </div>
+
+                <div class="faq-item bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
+                    <div class="p-4 flex justify-between items-center"><span class="font-medium">Gibt es Support für Home-Office-Anbindungen?</span><svg class="faq-icon h-5 w-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></div>
+                    <div class="faq-answer px-4 pb-4 text-slate-400 text-sm">Ja, wir unterstützen bei Problemen mit dem Firmen-VPN. Bitte stellen Sie vorab sicher, dass Ihre private Internetleitung grundsätzlich stabil funktioniert.</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleFaq(element) {
+            const isActive = element.classList.contains('active');
+            document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
+            if (!isActive) element.classList.add('active');
+        }
+    </script>
+</body>
+</html>

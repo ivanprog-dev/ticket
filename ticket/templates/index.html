@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT-Support Ticketdesk</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .ticket-card { border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .status-offen { border-left: 5px solid #ffc107; }
+        .status-erledigt { border-left: 5px solid #198754; opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark mb-4">
+    <div class="container">
+        <span class="navbar-brand mb-0 h1"><i class="bi bi-cpu"></i> Fachinformatiker TicketDesk</span>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card ticket-card p-4 mb-4">
+                <h4><i class="bi bi-plus-circle"></i> Neues Ticket</h4>
+                <hr>
+                <form action="/add" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Titel</label>
+                        <input type="text" name="titel" class="form-control" placeholder="Was ist kaputt?" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Priorität</label>
+                        <select name="prioritaet" class="form-select">
+                            <option value="Niedrig">Niedrig</option>
+                            <option value="Mittel" selected>Mittel</option>
+                            <option value="Hoch">Hoch 🔥</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Beschreibung</label>
+                        <textarea name="beschreibung" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Ticket erstellen</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <h4 class="mb-3">Aktuelle Tickets</h4>
+            {% for ticket in tickets %}
+            <div class="card mb-3 ticket-card {{ 'status-offen' if ticket.status == 'Offen' else 'status-erledigt' }}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title">{{ ticket.titel }}</h5>
+                        <span class="badge {{ 'bg-danger' if ticket.prioritaet == 'Hoch' else 'bg-info' }}">
+                            {{ ticket.prioritaet }}
+                        </span>
+                    </div>
+                    <p class="card-text text-muted">{{ ticket.beschreibung }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted"><i class="bi bi-clock"></i> {{ ticket.datum.strftime('%H:%M - %d.%m.%y') }}</small>
+                        <div>
+                            {% if ticket.status == 'Offen' %}
+                            <a href="/solve/{{ ticket.id }}" class="btn btn-sm btn-success"><i class="bi bi-check-lg"></i> Lösen</a>
+                            {% endif %}
+                            <a href="/delete/{{ ticket.id }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Löschen?')"><i class="bi bi-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

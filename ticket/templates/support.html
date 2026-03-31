@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Übersicht</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#0f172a] text-slate-200 min-h-screen p-8">
+
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <h1 class="text-3xl font-bold">Ticket Übersicht</h1>
+            <a href="/" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm transition">← Formular</a>
+        </div>
+
+        <form action="/support" method="GET" class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-10 p-6 bg-slate-800/50 rounded-xl border border-slate-700">
+            <div class="md:col-span-2">
+                <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Suche</label>
+                <input type="text" name="q" value="{{ q }}" placeholder="Titel, Name oder Inhalt..." 
+                       class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Kategorie</label>
+                <select name="kat" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    <option value="">Alle</option>
+                    <option value="Software" {% if kat == 'Software' %}selected{% endif %}>Software</option>
+                    <option value="Hardware" {% if kat == 'Hardware' %}selected{% endif %}>Hardware</option>
+                    <option value="Zugang/Account" {% if kat == 'Zugang/Account' %}selected{% endif %}>Zugang/Account</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Priorität</label>
+                <select name="prio" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    <option value="">Alle</option>
+                    <option value="Hoch" {% if prio == 'Hoch' %}selected{% endif %}>Hoch</option>
+                    <option value="Mittel" {% if prio == 'Mittel' %}selected{% endif %}>Mittel</option>
+                    <option value="Niedrig" {% if prio == 'Niedrig' %}selected{% endif %}>Niedrig</option>
+                </select>
+            </div>
+
+            <div class="flex items-end gap-2">
+                <div class="flex-1">
+                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Status</label>
+                    <select name="status" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                        <option value="">Alle</option>
+                        <option value="Offen" {% if st == 'Offen' %}selected{% endif %}>Offen</option>
+                        <option value="In Bearbeitung" {% if st == 'In Bearbeitung' %}selected{% endif %}>In Bearbeitung</option>
+                        <option value="Erledigt" {% if st == 'Erledigt' %}selected{% endif %}>Erledigt</option>
+                    </select>
+                </div>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-500 p-2.5 rounded-lg transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </button>
+                <a href="/support" class="bg-slate-700 hover:bg-slate-600 p-2.5 rounded-lg transition text-sm">Reset</a>
+            </div>
+        </form>
+
+        <div class="space-y-4">
+            {% for ticket in tickets %}
+<div class="bg-slate-800 border border-slate-700 p-6 rounded-xl shadow-lg flex justify-between items-center hover:border-slate-500 transition {% if ticket.status == 'Erledigt' %}opacity-50 grayscale-[0.5]{% endif %}">
+    <div>
+        <div class="flex gap-2 mb-2 items-center">
+            <span class="text-slate-500 text-xs font-mono">#{{ ticket.id }}</span>
+            <span class="px-2 py-0.5 rounded uppercase text-[10px] font-bold {{ ticket.get_kat_color() }}">{{ ticket.kategorie }}</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold {{ ticket.get_status_color() }}">{{ ticket.status }}</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold {{ ticket.get_prio_color() }}">PRIO: {{ ticket.prioritaet }}</span>
+            <span class="text-slate-400 text-xs ml-2">👤 {{ ticket.bearbeiter }}</span>
+        </div>
+        <h2 class="text-xl font-semibold mb-1">{{ ticket.titel }}</h2>
+        <p class="text-slate-400 text-sm">{{ ticket.kunde_name }} | {{ ticket.kunde_firma }}</p>
+    </div>
+    
+    <div class="flex items-center gap-4">
+        {% if ticket.status == 'Erledigt' %}
+            <span class="text-emerald-500 text-sm font-bold flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                Abgeschlossen
+            </span>
+        {% endif %}
+        <a href="/support/ticket/{{ ticket.id }}" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg shadow-blue-900/20">
+            Öffnen
+        </a>
+    </div>
+</div>
+{% else %}
+            <div class="text-center py-20 bg-slate-800/30 rounded-xl border border-dashed border-slate-700">
+                <p class="text-slate-500">Keine Tickets gefunden, die den Filtern entsprechen.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</body>
+</html>
